@@ -18,11 +18,11 @@ namespace DemoLibrary
         public static void AddNewPerson(PersonModel person)
         {
             List<PersonModel> people = GetAllPeople();
-
+            
             AddPersonToPeopleList(people, person);
 
             List<string> lines = ConvertModelsToCSV(people);
-
+            
             File.WriteAllLines(personTextFile, lines);
         }
 
@@ -32,22 +32,20 @@ namespace DemoLibrary
             {
                 throw new ArgumentException("You passed in an invalid parameter", "FirstName");
             }
-
             if (string.IsNullOrWhiteSpace(person.LastName))
             {
                 throw new ArgumentException("You passed in an invalid parameter", "LastName");
             }
-
             people.Add(person);
         }
 
         public static List<string> ConvertModelsToCSV(List<PersonModel> people)
         {
             List<string> output = new List<string>();
-
+            
             foreach (PersonModel user in people)
             {
-                output.Add($"{ user.FirstName },{ user.LastName }");
+                output.Add($"{user.FirstName}, {user.LastName}");    
             }
 
             return output;
