@@ -21,7 +21,7 @@ namespace DemoLibrary
             
             AddPersonToPeopleList(people, person);
 
-            List<string> lines = ConvertModelsToCSV(people);
+            List<string> lines = ConvertModelsToCsv(people);
             
             File.WriteAllLines(personTextFile, lines);
         }
@@ -39,13 +39,13 @@ namespace DemoLibrary
             people.Add(person);
         }
 
-        public static List<string> ConvertModelsToCSV(List<PersonModel> people)
+        public static List<string> ConvertModelsToCsv(List<PersonModel> people)
         {
             List<string> output = new List<string>();
-            
+
             foreach (PersonModel user in people)
             {
-                output.Add($"{user.FirstName}, {user.LastName}");    
+                output.Add($"{user.FirstName}, {user.LastName}");
             }
 
             return output;
@@ -53,16 +53,27 @@ namespace DemoLibrary
 
         public static List<PersonModel> GetAllPeople()
         {
-            List<PersonModel> output = new List<PersonModel>();
-            string[] content = File.ReadAllLines(personTextFile);
+            string[] personFile = ReadPersonFile(personTextFile);
+            List<PersonModel> people = ConvertCsvToModel(personFile);
+            return people;
+        }
 
-            foreach (string line in content)
+        public static string[] ReadPersonFile(string personFile)
+        {
+            string[] content = File.ReadAllLines(personFile);
+            return content;
+        }
+
+        public static List<PersonModel> ConvertCsvToModel(string[] peopleCsv)
+        {
+            List<PersonModel> people = new List<PersonModel>();
+            foreach (string person in peopleCsv)
             {
-                string[] data = line.Split(',');
-                output.Add(new PersonModel { FirstName = data[0], LastName = data[1] });
+                string[] data = person.Split(',');
+                people.Add(new PersonModel { FirstName = data[0], LastName = data[1] });
             }
 
-            return output;
+            return people;
         }
     }
 }
